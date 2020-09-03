@@ -5,8 +5,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import ECharts from 'vue-echarts'
+
 Vue.prototype.$axios = axios
-Vue.use({ axios, VueAxios});
+Vue.use({ axios, VueAxios})
+Vue.component('v-chart', ECharts)
 
 Vue.use(ElementUI)
 

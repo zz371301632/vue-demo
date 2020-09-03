@@ -1,7 +1,7 @@
 <template>
 <div >
 	<h4 class="titleText">本次启动耗时:</h4>
-	<p class="titleTime">992.00 ms</p>
+	<p class="titleTime">{{totleTime}}ms</p>
 	
 	<p class="titleText" style="font-size:16px">本次启动主流程中函数耗时如下:</p>
 	
@@ -11,43 +11,48 @@
       :key="index"
       :timestamp="activity.timestamp">
       {{activity.content}}
+	  
+	    <p class="timeline-name" ></p>
     </el-timeline-item>
   </el-timeline>
 	</div>
 </template>
+
 
 <script>
   export default {
     data() {
       return {
         reverse: true,
-        activities: [{
-          content: 'com.zhangyue.iReader.app.IreaderApplication&attachBaseContext',
-          timestamp: '187ms'
-        }, {
-          content: 'com.zhangyue.iReader.hotfix.HotfixManager&init',
-          timestamp: '25ms'
-        }, {
-          content: 'com.zhangyue.iReader.hotfix.HotfixManager&loadHotfixPluginClassLoader',
-          timestamp: '24ms'
-        }, {
-          content: 'com.zhangyue.iReader.hotfix.HotfixManager&readInstalledHotfix',
-          timestamp: '24ms'
-        }, {
-          content: 'com.zhangyue.iReader.hotfix.HotfixManager&loadHotfixPluginClassLoader',
-          timestamp: '23ms'
-        }, {
-          content: 'com.zhangyue.iReader.app.AppContext&onApplicationAttachBaseContext',
-          timestamp: '158ms'
-        }, {
-          content: 'com.zhangyue.iReader.crashcollect.CrashHandler&init',
-          timestamp: '7ms'
-        }, {
-          content: 'com.zhangyue.iReader.plugin.PluginManager&init',
-          timestamp: '147ms'
-        }]
+        activities: [],
+		totleTime:0
       };
-    }
+    },
+	created(){  //生命周期里接收参数
+        this.id = this.$route.query.id  //接受参数关键代码
+    },
+	mounted () {
+		this.$axios
+		  .get('http://www.maam.work/getAppStart/?did='+this.id)
+		  .then(response => {
+			  var list = response.data.result
+			  this.totleTime = 0
+			  console.log(list)
+			  for (var i=0;i<list.length;i++)
+			  { 
+				var tmp = {
+					timestamp: list[i].fields.costTime,
+					content: list[i].fields.coustDetail
+				}
+			    this.activities.push(tmp)
+				this.totleTime += parseInt(list[i].fields.costTime)
+			  }
+			
+		  })
+		  .catch(function (error) { // 请求失败处理
+			console.log(error);
+		  });
+	}
   };
 </script>
  

@@ -19,16 +19,42 @@ import Schart from 'vue-schart';
 						text: '页面层级'
 					},
 					bgColor: '#fbfbfb',
-					labels: ['ActivityBookShelf', 'UniversalActivity','UniversalActivity'],
+					labels: [],
 					datasets: [
 						{
 							label: 'ui层级',
-							data: [5,20,7]
-						},
-					 
+							data: []
+						}
 					]
 				}
 			}
+		},created(){  //生命周期里接收参数
+        this.id = this.$route.query.id  //接受参数关键代码
+		},
+		mounted () {
+		  this.$axios
+		  .get('http://www.maam.work/getUiLevel?did='+this.id)
+		  .then(response => {
+			  var list = response.data.result
+			  var tableData = []
+			  var tableDataI = []
+			  for (var i=0;i<list.length;i++)
+			  { 
+			    var mpage = list[i].fields.page
+			    var pageName = mpage.substring(mpage.lastIndexOf('.')+1,mpage.length)
+				tableData.push(pageName)
+				tableDataI.push(parseInt(list[i].fields.level))
+			  }
+			  this.ui.labels = tableData
+			  var  datasets = [{
+							label: 'ui层级',
+							data: tableDataI
+			  }]
+			  this.ui.datasets = datasets
+		  })
+		  .catch(function (error) { // 请求失败处理
+			console.log(error);
+		  });
 		}
 	};
 </script>

@@ -2,68 +2,102 @@
   <div>
     <el-table
       :data="tableData"
-      style="width: 100%"
+      style="width: 100%"        
 	  >
+				
       <el-table-column
         prop="date"
-        label="日期"
+        label="测试时间"
         width="180">
       </el-table-column>
+	  
       <el-table-column
-        prop="name"
+        prop="phoneMode"
+        label="手机厂商"
+        width="180">
+      </el-table-column>
+	  
+	    <el-table-column
+        prop="phoneBrand"
         label="手机型号"
         width="180">
       </el-table-column>
+	  
       <el-table-column
-        prop="os"
+        prop="systemVersion"
         label="系统版本">
       </el-table-column>
-	  <el-table-column
-        prop="version"
-        label="app版本">
+	  
+	   <el-table-column
+        prop="appVersion"
+        label="App版本">
       </el-table-column>
+	  
+	   <el-table-column
+        prop="dokitVersion"
+        label="Dokit版本">
+      </el-table-column>
+	
+	 
 	   <el-table-column
         label="操作" >
-		<i class="el-icon-view" @click='clickHandler'></i>
-		</i>
+		   <template slot-scope="scope">
+		<i class="el-icon-view" @click='clickHandler(scope.$index)'></i>
+		  </template>
       </el-table-column>
+	  
+ 
     </el-table>
+	
   </div>
 </template>
 
 <script>
+
+function formatDate(date) {
+  var date = new Date(date);
+  var YY = date.getFullYear() + '-';
+  var MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+  var DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+  var hh = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+  var mm = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+  var ss = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+  return YY + MM + DD +" "+hh + mm + ss;
+}
   
 import CenterTable from './CenterTable'
 	export default { 
 		components: CenterTable,
 		data() {
         return {
-		  id:29,
           tableData: []
         }
       },
 	  methods:{
-	   clickHandler:function (){
-	     this.$router.push({
+	   clickHandler:function (id){
+
+	       this.$router.push({
 		  path:'SecondTop',
 		  query:{
-		    id:this.id
+		    id:this.tableData[id].pk
 		  }
 		 })
 	   }
 	  },
 	   mounted () {
 		this.$axios
-		  .get('http://140.143.18.27/getAllAppInfo/')
+		  .get('http://www.maam.work/getCheckDataList/')
 		  .then(response => {
 			  var list = response.data.result
 			  for (var i=0;i<list.length;i++)
 			  { 
 				var tmp = {
-					date: list[i].fields.time,
-					name: list[i].fields.deviceName,
-					os: list[i].fields.os,
-					version: list[i].fields.appVersion,
+					date: formatDate(list[i].fields.time),
+					phoneMode: list[i].fields.phoneMode,
+					systemVersion: list[i].fields.systemVersion,
+					appVersion: list[i].fields.appVersion,
+					phoneBrand: list[i].fields.phoneBrand,
+					dokitVersion: list[i].fields.dokitVersion,
 					pk:list[i].pk
 				}
 			    this.tableData.push(tmp)

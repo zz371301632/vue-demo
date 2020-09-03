@@ -20,7 +20,7 @@
 export default {
     data() {
       return {
-        tabPosition: 'bigfile'
+        tabPosition: 'start'
       };
     },
 	methods: {
@@ -38,7 +38,7 @@ export default {
         this.id = this.$route.query.id,  //接受参数关键代码
 		console.log('id:'+this.id);
 		this.$router.push({
-		  path:'bigfile',
+		  path:'start',
 		  query:{
 		    id:this.id
 		  }

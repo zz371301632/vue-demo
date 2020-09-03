@@ -33,17 +33,11 @@
         }
       },
 	  created(){  //生命周期里接收参数
-        this.id = this.$route.query.id,  //接受参数关键代码
-		this.$router.push({
-		  path:'bigfile',
-		  query:{
-		    id:this.id
-		  }
-	    })
+        this.id = this.$route.query.id  //接受参数关键代码
       },
 	  mounted () {
 		this.$axios
-		  .get('http://140.143.18.27/getBigFile?did='+this.id)
+		  .get('http://www.maam.work/getBigFile?did='+this.id)
 		  .then(response => {
 			  var list = response.data.result
 			  for (var i=0;i<list.length;i++)
