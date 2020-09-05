@@ -27,6 +27,7 @@ export default {
 </script>
 
 <style scoped>
+@import "./assets/css/chart.css";
   .el-header, .el-footer {
 	background-color: #232C42;
     color: #333;

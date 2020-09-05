@@ -9,8 +9,9 @@
         width="180">
       </el-table-column>
       <el-table-column
+	    class='fileFont'
         prop="size"
-        label="文件大小"
+        label="文件大小(MB)"
         width="180">
       </el-table-column>
       <el-table-column
@@ -43,7 +44,7 @@
 			  for (var i=0;i<list.length;i++)
 			  { 
 				var tmp = {
-					size: list[i].fields.fileSize,
+					size: (list[i].fields.fileSize/(1024*1024)).toFixed(2),
 					name: list[i].fields.fileName,
 					path: list[i].fields.filePath
 				}
@@ -60,5 +61,7 @@
  
  
 <style scoped>
-
+.fileFont{
+   color: #ff0000;
+}
 </style>

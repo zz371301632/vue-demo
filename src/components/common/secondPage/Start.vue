@@ -40,9 +40,11 @@
 			  console.log(list)
 			  for (var i=0;i<list.length;i++)
 			  { 
+			    var coustDetail = list[i].fields.coustDetail
+				coustDetail = coustDetail.substring(coustDetail.lastIndexOf('=')+1,coustDetail.length)
 				var tmp = {
 					timestamp: list[i].fields.costTime,
-					content: list[i].fields.coustDetail
+					content: coustDetail
 				}
 			    this.activities.push(tmp)
 				this.totleTime += parseInt(list[i].fields.costTime)

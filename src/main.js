@@ -7,11 +7,15 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import ECharts from 'vue-echarts'
 
+import './assets/css/chart.css' 
+
 Vue.prototype.$axios = axios
 Vue.use({ axios, VueAxios})
 Vue.component('v-chart', ECharts)
 
 Vue.use(ElementUI)
+
+
 
 new Vue({
   el: '#app',

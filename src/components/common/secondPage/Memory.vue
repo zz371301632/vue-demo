@@ -1,35 +1,12 @@
 <template>
-  <div class="schart-box">
-    <schart class="schart" canvasId="line" :options="memory"></schart>
-  </div>
+  <div id="mChart"  :style="{width: '100%', height: '500px'}"></div>
 </template>
 
 <script>
-	import Schart from 'vue-schart';
+import {drawLine} from './chart'
+
 	export default {
-		name: 'basecharts',
-		components: {
-			Schart
-		},
-		data() {
-			return {
-				memory: {
-					type: 'line',
-					title: {
-						text: '内存占用情况'
-					},
-					bgColor: '#fbfbfb',
-					labels: [],
-					datasets: [
-						{
-							label: '内存使用(MB)',
-							data: []
-						},
-					 
-					]
-				}
-			}
-		},created(){  //生命周期里接收参数
+		created(){  //生命周期里接收参数
         this.id = this.$route.query.id  //接受参数关键代码
 		},
 		mounted () {
@@ -50,22 +27,13 @@
 				for (var j=0;j<childList.length;j++)
 				{
 				    var tmp = tableData[tableData.length-1]
-					if(pageName == tmp || tmp == ''){
-					  tableData.push('')
-					}else{
-					  tableData.push(pageName)
-					}
+					tableData.push(pageName)
 					tableDataI.push(parseInt(childList[j].fields.value))
 				}
 				
 			  }
-			  this.memory.labels = tableData
-			
-			  var datasets = [{
-						label: '内存使用(MB)',
-						data: tableDataI
-			  }]
-			  this.memory.datasets = datasets
+			  
+			  drawLine(tableData,tableDataI,'内存','内存(MB)');
 		  })
 		  .catch(function (error) { // 请求失败处理
 			console.log(error);
@@ -78,8 +46,8 @@
 <style scoped>
 .schart {
 	margin: 0 auto;
-    width: 600px;
-    height: 400px;
+  width: 100%;
+    height: 500px;
 }
 .content-title {
     clear: both;

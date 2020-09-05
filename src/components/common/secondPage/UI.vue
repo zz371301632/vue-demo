@@ -1,34 +1,11 @@
 <template>
-  <div class="schart-box">
-    <schart class="schart" canvasId="line" :options="ui"></schart>
-  </div>
+   <div id="mChart"  :style="{width: '100%', height: '500px'}"></div>
 </template>
 
 <script>
-import Schart from 'vue-schart';
+
 	export default {
-		name: 'basecharts',
-		components: {
-			Schart
-		},
-		data() {
-			return {
-				ui: {
-					type: 'line',
-					title: {
-						text: '页面层级'
-					},
-					bgColor: '#fbfbfb',
-					labels: [],
-					datasets: [
-						{
-							label: 'ui层级',
-							data: []
-						}
-					]
-				}
-			}
-		},created(){  //生命周期里接收参数
+		created(){  //生命周期里接收参数
         this.id = this.$route.query.id  //接受参数关键代码
 		},
 		mounted () {
@@ -45,33 +22,40 @@ import Schart from 'vue-schart';
 				tableData.push(pageName)
 				tableDataI.push(parseInt(list[i].fields.level))
 			  }
-			  this.ui.labels = tableData
-			  var  datasets = [{
-							label: 'ui层级',
-							data: tableDataI
-			  }]
-			  this.ui.datasets = datasets
+			  this.drawChar(tableData,tableDataI)
 		  })
 		  .catch(function (error) { // 请求失败处理
 			console.log(error);
 		  });
+		},methods:{
+		    drawChar(xdata,mdata){
+			  var echarts = require('echarts');
+			  var myChart = echarts.init(document.getElementById('mChart'))
+			  myChart.setOption({
+			  
+					xAxis: {
+					
+						type: 'category',
+						data: xdata
+					},
+					yAxis: {
+						type: 'value'
+					},
+					series: [{
+					   label: {
+                show: true,
+                },  
+						data: mdata,
+						type: 'bar'
+					}]
+				
+			})
 		}
-	};
+	}
+	}
 </script>
  
  
 <style scoped>
-.schart {
-	margin: 0 auto;
-    width: 600px;
-    height: 400px;
-}
-.content-title {
-    clear: both;
-    font-weight: 400;
-    line-height: 50px;
-    margin: 10px 0;
-    font-size: 22px;
-    color: #1f2f3d;
-}
+
 </style>

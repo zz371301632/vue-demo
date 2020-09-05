@@ -1,35 +1,11 @@
 <template>
-  <div class="schart-box">
-    <schart class="schart" canvasId="line" :options="frame"></schart>
-  </div>
+  <div id="mChart"  :style="{width: '100%', height: '500px'}"></div>
 </template>
 
 <script>
-import Schart from 'vue-schart';
+import {drawLine} from './chart'
+
 export default {
-    name: 'basecharts',
-    components: {
-        Schart
-    },
-    data() {
-        return {
-            frame: {
-                type: 'line',
-                title: {
-                    text: '卡顿统计'
-                },
-                bgColor: '#fbfbfb',
-                labels: [],
-                datasets: [
-                    {
-                        label: '帧率',
-                        data: [1.1]
-                    },
-                 
-                ]
-            }
-		}
-    },
 	created(){  //生命周期里接收参数
         this.id = this.$route.query.id  //接受参数关键代码
     },
@@ -49,18 +25,14 @@ export default {
 			    var childList = list[i].list
 				for (var j=0;j<childList.length;j++)
 				{
+					var tmp = tableData[tableData.length-1]
 					tableData.push(pageName)
 					tableDataI.push(parseInt(childList[j].fields.value))
 				}
 				
 			  }
-			  this.frame.labels = tableData
-			
-			  var datasets = [{
-						label: '帧率',
-						data: tableDataI
-			  }]
-			  this.frame.datasets = datasets
+
+			  drawLine(tableData,tableDataI,'帧率','fps');
 		  })
 		  .catch(function (error) { // 请求失败处理
 			console.log(error);
@@ -71,17 +43,5 @@ export default {
 
  
 <style scoped>
-.schart {
-	margin: 0 auto;
-    width: 600px;
-    height: 400px;
-}
-.content-title {
-    clear: both;
-    font-weight: 400;
-    line-height: 50px;
-    margin: 10px 0;
-    font-size: 22px;
-    color: #1f2f3d;
-}
+
 </style>
