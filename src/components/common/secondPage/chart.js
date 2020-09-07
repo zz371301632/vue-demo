@@ -67,6 +67,12 @@ var option = {
                     color: 'rgb(10, 70, 131)'
                 }])
             },
+			  label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
             data: mdata
         }
     ]

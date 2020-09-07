@@ -3,7 +3,6 @@
 </template>
 
 <script>
-
 	export default {		
 	created(){  //生命周期里接收参数
         this.id = this.$route.query.id  //接受参数关键代码
@@ -33,9 +32,10 @@
 			  var echarts = require('echarts');
 			  var myChart = echarts.init(document.getElementById('mChart'))
 			  myChart.setOption({
-			  
+			    title: {
+					text: '页面打开时长（单位:ms）'
+					},
 					xAxis: {
-					
 						type: 'category',
 						data: xdata
 					},
@@ -44,8 +44,8 @@
 					},
 					series: [{
 					   label: {
-                show: true,
-                },  
+						show: true,
+						},  
 						data: mdata,
 						type: 'bar'
 					}]
@@ -55,7 +55,6 @@
 	}
 	};
 </script>
- 
  
 <style  scoped>
 
